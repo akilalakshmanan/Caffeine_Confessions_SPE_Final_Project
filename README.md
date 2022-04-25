@@ -23,12 +23,12 @@ without any effort. This benefits both the customers as well as the barista.
     ● Modify the status of the order like order received, the order is in preparation, order served to the customer.
 
 # Tech Stack
-Frontend: ReactJs
-Backend: NodeJS, ExpressJS
-Database: MongoDB
-SCM: Git
-CI/CD: Jenkins
-Test: Jasmine, Mocha
-Containerization: Docker
-Configuration Management/Deployment: Ansible
-Monitoring: ELK stack
+    ● Frontend: ReactJs
+    ● Backend: NodeJS, ExpressJS
+    ● Database: MongoDB
+    ● SCM: Git
+    ● CI/CD: Jenkins
+    ● Test: Jasmine, Mocha
+    ● Containerization: Docker
+    ● Configuration Management/Deployment: Ansible
+    ● Monitoring: ELK stack
