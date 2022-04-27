@@ -29,6 +29,11 @@ header a {
 img {
   background-color: #632626;
 }
+
+.img-thumbnail {
+  height: 80px;
+}
+
 main {
   padding: 1rem;
 }

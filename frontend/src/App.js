@@ -3,6 +3,7 @@ import logo from './logo.jpeg';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
+import CartScreen from './screens/CartScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -18,6 +19,9 @@ function App() {
               <LinkContainer to="/">
                 <Navbar.Brand>Caffeine Confessions!!!</Navbar.Brand>
               </LinkContainer>
+              <LinkContainer to="/cart">
+                <Navbar.Brand>Visit your cart</Navbar.Brand>
+              </LinkContainer>
             </Container>
           </Navbar>
         </header>
@@ -25,6 +29,7 @@ function App() {
           <Container>
             <Routes>
               <Route path="/product/:slug" element={<ProductScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
