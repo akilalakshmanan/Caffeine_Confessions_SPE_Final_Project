@@ -12,7 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "express-async-handler": "^1.2.0",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
