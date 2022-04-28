@@ -1,8 +1,12 @@
-import { Link } from 'react-router-dom';
 import { useEffect, useReducer } from 'react';
-import logger from 'use-reducer-logger';
 import axios from 'axios';
-//import data from '../data';
+import logger from 'use-reducer-logger';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Product from '../components/Product';
+import { Helmet } from 'react-helmet-async';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -18,14 +22,12 @@ const reducer = (state, action) => {
 };
 
 function HomeScreen() {
-  //const [products, setProducts] = useState([]);
-  // returns an array that contains a variable products and a function setProducts
-  // to update the variable product.
   const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
     products: [],
     loading: true,
     error: '',
   });
+  // const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -36,44 +38,30 @@ function HomeScreen() {
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
+
+      // setProducts(result.data);
     };
     fetchData();
   }, []);
   return (
     <div>
-      <h1>Featured products</h1>
+      <Helmet>
+        <title>Caffeine Coffesions</title>
+      </Helmet>
+      <h1>Featured Products</h1>
       <div className="products">
-        {/* {products.map((products) => (
-          <div className="product" key={products.slug}>
-            <Link to={`/product/${products.slug}`}>
-              <img src={products.image} alt={products.name} />
-            </Link>
-            <div className="product-info"> */}
         {loading ? (
-          <div>Loading...</div>
+          <LoadingBox />
         ) : error ? (
-          <div>{error}</div>
+          <MessageBox variant="danger">{error}</MessageBox>
         ) : (
-          products.map((products) => (
-            <div className="product" key={products.slug}>
-              <Link to={`/product/${products.slug}`}>
-                <img src={products.image} alt={products.name} />
-              </Link>
-              {/* <p>
-                <strong>${products.price}</strong>
-              </p>
-              <button>Add to Cart</button> */}
-              <div className="product-info">
-                <Link to={`/product/${products.slug}`}>
-                  <p>{products.name}</p>
-                </Link>
-                <p>
-                  <strong>${products.price}</strong>
-                </p>
-                <button>Add to cart</button>
-              </div>
-            </div>
-          ))
+          <Row>
+            {products.map((product) => (
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                <Product product={product}></Product>
+              </Col>
+            ))}
+          </Row>
         )}
       </div>
     </div>
