@@ -1,12 +1,13 @@
 import express from 'express';
-import data from './data.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import ServerApiVersion from 'mongodb';
+import userRouter from './routes/userRoutes.js'
 import productRouter from './routes/productRoutes.js';
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const username = "akila_l";
 const password = "ZUUQsnjqABxzkWFv";
@@ -20,27 +21,18 @@ mongoose.connect(
   //   serverApi: ServerApiVersion.v1
   // }
 );
-console.log(mongoose);
 const db = mongoose.connection;
-console.log(db);
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
   console.log("Connected successfully to mongoDB");
 });
 
 app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
 
 // app.get('/api/products', (req, res) => {
 //   res.send(data.products);
 // });
-app.get('/api/products/slug/:slug', (req, res) => {
-  const product = data.products.find((x) => x.slug === req.params.slug);
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: 'Product Not Found' });
-  }
-});
 
 const port = process.env.port || 5000;
 app.listen(port, () => {
