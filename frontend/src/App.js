@@ -22,6 +22,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import SearchScreen from './screens/SearchScreen';
 import SigninScreen from './screens/SigninScreen';
 import SignupScreen from './screens/SignupScreen';
+import UserListScreen from './screens/UserListScreen';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 
@@ -219,14 +220,14 @@ function App() {
                   </AdminRoute>
                 }
               ></Route> */}
-              {/* <Route
+              <Route
                 path="/admin/users"
                 element={
                   <AdminRoute>
                     <UserListScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
+              ></Route>
               <Route
                 path="/admin/products"
                 element={

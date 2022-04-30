@@ -23,7 +23,8 @@ export default function SigninScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('/api/users/signin', {
+      const instance = Axios.create({baseURL:"http://localhost:5000"});
+      const { data } = await instance.post('/api/users/signin', {
         email,
         password,
       });

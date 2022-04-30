@@ -1,13 +1,19 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRoutes.js'
 import productRouter from './routes/productRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
 
+dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const id = mongoose.Types.ObjectId();
+console.log('id',id);
 
 const username = "akila_l";
 const password = "ZUUQsnjqABxzkWFv";
@@ -29,10 +35,8 @@ db.once("open", function () {
 
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
-
-// app.get('/api/products', (req, res) => {
-//   res.send(data.products);
-// });
+app.use('/api/orders', orderRouter);
+// app.use('/api/seed', seedRouter);
 
 const port = process.env.port || 5000;
 app.listen(port, () => {

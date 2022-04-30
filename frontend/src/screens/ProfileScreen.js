@@ -36,7 +36,8 @@ export default function ProfileScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(
+      const instance = axios.create({baseURL:"http://localhost:5000"});
+      const { data } = await instance.put(
         '/api/users/profile',
         {
           name,

@@ -29,7 +29,8 @@ export default function SignupScreen() {
       return;
     }
     try {
-      const { data } = await Axios.post('/api/users/signup', {
+      const instance = Axios.create({baseURL:"http://localhost:5000"});
+      const { data } = await instance.post('/api/users/signup', {
         name,
         email,
         password,
