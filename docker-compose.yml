@@ -5,7 +5,7 @@ services:
     build:
       context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/
       dockerfile: Dockerfile
-    image: react-image
+    image: akila1811/spe-final-project/react-image
     container_name: react-frontend-container
     ports:
       - '3000:3000'
@@ -18,7 +18,7 @@ services:
     build:
       context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/backend
       dockerfile: Dockerfile
-    image: node-image
+    image: akila1811/spe-final-project/node-image
     container_name: node-backend-container
     ports:
       - '5000:5000'
