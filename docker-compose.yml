@@ -18,7 +18,7 @@ services:
     build:
       context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/backend
       dockerfile: Dockerfile
-    image: node-image
+    image: akila1811/spe-final-project
     container_name: node-backend-container
     ports:
       - '5000:5000'
