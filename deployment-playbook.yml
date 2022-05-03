@@ -25,7 +25,9 @@
       command: docker pull akila1811/node-image:latest
 
     - name: Building docker container from image
-      command: docker-compose up
+      docker-compose:
+        project_src: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/
+        state: present
 
     # - name: Building docker container from image
     #   command: docker run -d -it --name react-frontend-container akila1811/react-image:latest
