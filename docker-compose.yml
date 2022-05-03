@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  frontend:
-    build:
-      context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/
-      dockerfile: Dockerfile
-    image: react-image
-    container_name: react-frontend-container
-    ports:
-      - '3000:3000'
-    volumes:
-      - /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/:/usr/src/app/frontend
-    depends_on:
-      - backend
+  # frontend:
+  #   build:
+  #     context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/
+  #     dockerfile: Dockerfile
+  #   image: react-image
+  #   container_name: react-frontend-container
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #     - /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/:/usr/src/app/frontend
+  #   depends_on:
+  #     - backend
 
   backend:
     build:
