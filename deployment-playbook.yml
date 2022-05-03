@@ -2,13 +2,13 @@
 - hosts: all
 
   tasks:
-    - name: stop container
-      command: docker stop react-frontend-container
-      ignore_errors: yes
+    # - name: stop container
+    #   command: docker stop react-frontend-container
+    #   ignore_errors: yes
 
-    - name: remove container
-      command: docker rm react-frontend-container
-      ignore_errors: yes
+    # - name: remove container
+    #   command: docker rm react-frontend-container
+    #   ignore_errors: yes
 
     - name: stop container
       command: docker stop node-backend-container
@@ -18,8 +18,8 @@
       command: docker rm node-backend-container
       ignore_errors: yes
 
-    - name: Pull image from dockerhub
-      command: docker pull akila1811/react-image:latest
+    # - name: Pull image from dockerhub
+    #   command: docker pull akila1811/react-image:latest
 
     - name: Pull image from dockerhub
       command: docker pull akila1811/node-image:latest
