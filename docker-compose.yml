@@ -5,7 +5,7 @@ services:
     build:
       context: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/frontend/
       dockerfile: Dockerfile
-    image: akila1811/react-image
+    image: akila1811/react-image #dockerhub-username/repo-name
     container_name: react-frontend-container
     ports:
       - '3000:3000'
