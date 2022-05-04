@@ -1,0 +1,36 @@
+---
+- hosts: all
+
+  tasks:
+    # - name: stop container
+    #   command: docker stop react-frontend-container
+    #   ignore_errors: yes
+
+    # - name: remove container
+    #   command: docker rm react-frontend-container
+    #   ignore_errors: yes
+
+    - name: stop container
+      command: docker stop node-backend-container
+      ignore_errors: yes
+
+    - name: remove container
+      command: docker rm node-backend-container
+      ignore_errors: yes
+
+    # - name: Pull image from dockerhub
+    #   command: docker pull akila1811/react-image:latest
+
+    - name: Pull image from dockerhub
+      command: docker pull akila1811/node-image:latest
+
+    - name: Building docker container from image
+      docker-compose:
+        project_src: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/
+        state: present
+
+    # - name: Building docker container from image
+    #   command: docker run -d -it --name react-frontend-container akila1811/react-image:latest
+
+    # - name: Building docker container from image
+    #   command: docker run -d -it --name node-backend-container akila1811/node-image:latest
