@@ -13,6 +13,7 @@ const reviewSchema = new mongoose.Schema(
 
 const productSchema = new mongoose.Schema(
     {
+      productIdStripe: { type: String, required: true, unique: true},
       name: { type: String, required: true, unique: true },
       slug: { type: String, required: true, unique: true },
       image: { type: String, required: true },
@@ -21,7 +22,9 @@ const productSchema = new mongoose.Schema(
       category: { type: String, required: true },
       description: { type: String, required: true },
       price: { type: Number, required: true },
+      priceIdStripe: { type: String, required: true},
       countInStock: { type: Number, required: true },
+      isActive: {type: Boolean, required: true}
     },
     {
       timestamps: true,

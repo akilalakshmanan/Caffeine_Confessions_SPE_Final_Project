@@ -106,6 +106,36 @@ userRouter.post(
 );
 
 userRouter.put(
+  '/subscribeCBeans/:id',
+  isAuth,
+  expressAsyncHandler(async(req,res)=>{
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.isSubdForCBeans = Boolean(req.body.isSubdForCBeans);
+      const updatedUser = await user.save();
+      res.send({ message: 'User Updated', user: updatedUser });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+)
+
+userRouter.put(
+  '/addCoffeeBeans/:id',
+  isAuth,
+  expressAsyncHandler(async(req,res)=>{
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.coffeeBeans = user.coffeeBeans + 10;
+      const updatedUser = await user.save();
+      res.send({ message: 'User Updated', user: updatedUser });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  })
+)
+
+userRouter.put(
   '/profile',
   isAuth,
   expressAsyncHandler(async (req, res) => {

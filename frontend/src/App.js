@@ -18,6 +18,9 @@ import SearchBox from './components/SearchBox';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import AdminRoute from './components/AdminRoute';
 import ProductListScreen from './screens/ProductListScreen';
+import ProductEditScreen from './screens/ProductEditScreen';
+import ProductCreateScreen from './screens/ProductCreateScreen';
+import UserEditScreen from './screens/UserEditScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SearchScreen from './screens/SearchScreen';
 import SigninScreen from './screens/SigninScreen';
@@ -41,6 +44,16 @@ function App() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      console.log("Order placed! You will receive an email confirmation.");
+    }
+    if (query.get("canceled")) {
+      console.log(
+        "Order canceled -- continue to shop around and checkout when you're ready."
+      );
+    }
     const fetchCategories = async () => {
       try {
         const instance = axios.create({baseURL:"http://localhost:5000"})
@@ -52,6 +65,34 @@ function App() {
     };
     fetchCategories();
   }, []);
+
+  const getMachineAction = async () => {
+    try {
+      if(userInfo){
+        const response = await fetch(`http://localhost:5000/newFile/${userInfo._id}`);
+        console.log(response);
+        if (response.status === 200) {
+          // getLocalStream();
+          console.log("Machine successfully found.");
+          const myJson = await response.json(); //extract JSON from the http response
+          console.log(myJson);
+        } else {
+          console.log("not a 200");
+        }
+      }else{
+        console.log("restricted from calling newFile API");
+        // play()
+      }
+    } catch (err) {
+      // catches errors both in fetch and response.json
+      console.log(err);
+    } finally {
+      // do it again in 2 seconds
+      setTimeout(getMachineAction , 10000);
+    }
+  };
+
+  // getMachineAction();
   return (
     <BrowserRouter>
       <div
@@ -236,23 +277,30 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              {/* <Route
+              <Route
                 path="/admin/product/:id"
                 element={
                   <AdminRoute>
                     <ProductEditScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
-              {/* <Route
+              ></Route>
+              <Route
+                path="/admin/product/create"
+                element={
+                  <AdminRoute>
+                    <ProductCreateScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
                 path="/admin/user/:id"
                 element={
                   <AdminRoute>
                     <UserEditScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
-
+              ></Route>
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
@@ -264,6 +312,57 @@ function App() {
     </BrowserRouter>
   );
 }
+
+// function play() {
+//   var sound      = document.createElement('audio');
+//   sound.id       = 'audio-player';
+//   sound.controls = 'controls';
+//   sound.src      = 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3';
+//   sound.type     = 'audio/mpeg';
+//   document.getElementById('root').appendChild(sound);
+//   var audio = document.getElementById("audio");
+//   audio.play();
+//   // <audio id="audio" src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"></audio>
+// }
+
+// const audio = new Audio( 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3' );
+// audio.muted = true;
+
+// const alert_elem = document.querySelector( '.alert' );
+
+// audio.play().then( () => {
+//   // already allowed
+//   alert_elem.remove();
+//   resetAudio();
+// } )
+// .catch( () => {
+//   // need user interaction
+//   alert_elem.addEventListener( 'click', ({ target }) => {
+//     if( target.matches('button') ) {
+//       const allowed = target.value === "1";
+//       if( allowed ) {
+//         audio.play()
+//           .then( resetAudio );
+//       }
+//       alert_elem.remove();
+//     }
+//   } );
+// } );
+
+// document.getElementById( 'btn' ).addEventListener( 'click', (e) => {
+//   if( audio.muted ) {
+//     console.log( 'silent notification' );
+//   }
+//   else {
+//     audio.play();
+//   }
+// } );
+
+// function resetAudio() {
+//   audio.pause();
+//   audio.currentTime = 0;
+//   audio.muted = false;
+// }
 
 function Header() {
   return <img src={logo} width="220px" height="180px" alt="Logo" />;

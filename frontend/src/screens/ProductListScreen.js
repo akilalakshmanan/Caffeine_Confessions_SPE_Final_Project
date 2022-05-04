@@ -99,18 +99,28 @@ export default function ProductListScreen() {
   const createHandler = async () => {
     if (window.confirm('Are you sure to create?')) {
       try {
-        dispatch({ type: 'CREATE_REQUEST' });
-        const instance = axios.create({ baseURL: 'http://localhost:5000' });
-        const { data } = await instance.post(
-          '/api/products',
-          {},
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        toast.success('product created successfully');
-        dispatch({ type: 'CREATE_SUCCESS' });
-        navigate(`/admin/product/${data.product._id}`);
+        // dispatch({ type: 'CREATE_REQUEST' });
+        // const instance = axios.create({ baseURL: 'http://localhost:5000' });
+        // const { data } = await instance.post(
+        //   '/api/products',
+        //   {
+        //     name: 'sample_1234',
+        //     slug: 'sample-1234',
+        //     price: 10,
+        //     image: '/images/p3.jpg',
+        //     category: 'coffee',
+        //     brand: 'Caffiene Confession',
+        //     countInStock: 1000,
+        //     description: "tqwyhkjsbnmascd ",
+        //     isActive: true,
+        //   },
+        //   {
+        //     headers: { Authorization: `Bearer ${userInfo.token}` },
+        //   }
+        // );
+        // toast.success('product created successfully');
+        // dispatch({ type: 'CREATE_SUCCESS' });
+        navigate(`/admin/product/create`);
       } catch (err) {
         toast.error(getError(error));
         dispatch({
