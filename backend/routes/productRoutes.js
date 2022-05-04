@@ -2,6 +2,11 @@ import express from 'express';
 import Product from '../models/productModel.js';
 import expressAsyncHandler from 'express-async-handler';
 import { isAuth, isAdmin } from '../utils.js';
+import Stripe from 'stripe';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const stripe = new Stripe(process.env.STRIPE_PUBLIC_KEY);
 
 const productRouter = express.Router();
 
@@ -29,52 +34,66 @@ productRouter.get(
 );
 
 productRouter.post(
-  '/',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (res, req) => {
-    const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
-      image: '/images/p2.jpg',
-      price: 0,
-      category: 'sample category',
-      brand: 'sample brand',
-      countInStock: 0,
-      description: 'sample description',
-    });
-    const product = await newProduct.save();
-    req.send({
-      message: 'Product Created',
-      product,
-    });
-  })
+    '/',
+    isAuth,
+    isAdmin,
+    expressAsyncHandler( async(req, res)=>{
+      const productStripe = await stripe.products.create({
+        name: req.body.name,
+      });
+      const price = req.body.price;
+      const priceStripe = await stripe.prices.create({
+        unit_amount: price,
+        currency: 'inr',
+        recurring: {interval: 'month'},
+        product: productStripe.id,
+      });
+        const newProduct = new Product({
+            productIdStripe: productStripe.id,
+            name: req.body.name,
+            slug: req.body.slug,
+            image: req.body.image,
+            price: price,
+            priceIdStripe: priceStripe.id,
+            category: req.body.category,
+            brand: req.body.brand,
+            countInStock: req.body.countInStock,
+            description: req.body.description,
+            isActive: req.body.isActive
+        });
+        const product = await newProduct.save();
+        res.send({
+            message: "Product Created",
+            product
+        })
+    })
 );
 
 productRouter.put(
-  '/:id',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-    if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = req.body.image;
-      product.images = req.body.images;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
-      await product.save();
-      res.send({ message: 'Product Updated' });
-    } else {
-      res.status(404).send({ message: 'Product Not Found' });
-    }
-  })
-);
+    '/:id',
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req, res) => {
+      const productId = req.params.id;
+      const product = await Product.findById(productId);
+      if (product) {
+        product.name = req.body.name;
+        product.slug = req.body.slug;
+        product.price = req.body.price;
+        product.image = req.body.image;
+        product.images = req.body.images;
+        product.category = req.body.category;
+        product.brand = req.body.brand;
+        product.countInStock = req.body.countInStock;
+        product.description = req.body.description;
+        product.isActive = req.body.isActive;
+        await product.save();
+        res.send({ message: 'Product Updated' });
+      } else {
+        res.status(404).send({ message: 'Product Not Found' });
+      }
+    })
+  );
 
 productRouter.delete(
   '/:id',

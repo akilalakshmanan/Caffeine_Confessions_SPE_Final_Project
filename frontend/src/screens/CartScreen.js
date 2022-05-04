@@ -17,8 +17,21 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
+  const getPriceIdAndQuantity = (cartItems) => {
+    console.log(cartItems);
+    let priceId = '';
+    cartItems.forEach((item) => {
+      if (priceId !== '') {
+        priceId += '|' + item.priceIdStripe + "::" + item.quantity
+      } else {
+        priceId = item.priceIdStripe + "::" + item.quantity
+      }
+    })
+    return priceId
+  }
+
   const updateCartHandler = async (item, quantity) => {
-      const instance = axios.create({baseURL:"http://localhost:5000"})
+    const instance = axios.create({baseURL:"http://localhost:5000"})
     const { data } = await instance.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
@@ -33,8 +46,25 @@ export default function CartScreen() {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
 
-  const checkoutHandler = () => {
-    navigate('/signin?redirect=/shipping');
+  const checkoutHandler = async (event) => {
+    event.preventDefault();
+    try{
+      const instance = axios.create({baseURL:"http://localhost:5000"})
+      const response = await instance.post(`/create-checkout-session`);
+      // const resJson = response.json();
+      if (response.status === 303) {
+        console.log('responseresponse',response);
+      }else{
+        console.log('responseresponseresponse',response);
+      }
+      // if (data.countInStock < quantity) {
+      //   window.alert('Sorry. Product is out of stock');
+      //   return;
+      // }
+      window.location.assign(response.request.responseURL);
+    }catch (error){
+      console.log(error)
+    }
   };
 
   return (
@@ -112,16 +142,19 @@ export default function CartScreen() {
                   </h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
+                  <form action="/create-checkout-session" method='POST'>
+                  <input type="hidden" name="priceIdAQuantity" value={getPriceIdAndQuantity(cartItems)} />
                   <div className="d-grid">
                     <Button
-                      type="button"
+                      type="submit"
                       variant="primary"
-                      onClick={checkoutHandler}
+                      // onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
                       Proceed to Checkout
                     </Button>
                   </div>
+                  </form>
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>

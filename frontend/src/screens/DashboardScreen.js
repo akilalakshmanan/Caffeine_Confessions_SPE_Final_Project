@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-// import Chart from 'react-google-charts';
+import Chart from 'react-google-charts';
 import axios from 'axios';
 import { Store } from '../Store';
 import { getError } from '../utils';
@@ -36,9 +36,11 @@ export default function DashboardScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('/api/orders/summary', {
+        const instance = axios.create({ baseURL: 'http://localhost:5000' });
+        const { data } = await instance.get('/api/orders/summary', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
+        console.log("data",data);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -64,7 +66,8 @@ export default function DashboardScreen() {
               <Card>
                 <Card.Body>
                   <Card.Title>
-                    {summary.users && summary.users[0]
+                    {console.log('summarysummary',summary)}
+                    {summary.users && summary.users.length !==0 && summary.users[0]
                       ? summary.users[0].numUsers
                       : 0}
                   </Card.Title>
@@ -76,7 +79,7 @@ export default function DashboardScreen() {
               <Card>
                 <Card.Body>
                   <Card.Title>
-                    {summary.orders && summary.users[0]
+                    {summary.orders && summary.orders.length !==0 && summary.users[0]
                       ? summary.orders[0].numOrders
                       : 0}
                   </Card.Title>
@@ -89,7 +92,7 @@ export default function DashboardScreen() {
                 <Card.Body>
                   <Card.Title>
                     $
-                    {summary.orders && summary.users[0]
+                    {summary.orders && summary.orders.length !==0 && summary.users[0]
                       ? summary.orders[0].totalSales.toFixed(2)
                       : 0}
                   </Card.Title>
@@ -100,7 +103,7 @@ export default function DashboardScreen() {
           </Row>
           <div className="my-3">
             <h2>Sales</h2>
-            {/* {summary.dailyOrders.length === 0 ? (
+            {summary.dailyOrders.length === 0 ? (
               <MessageBox>No Sale</MessageBox>
             ) : (
               <Chart
@@ -113,11 +116,11 @@ export default function DashboardScreen() {
                   ...summary.dailyOrders.map((x) => [x._id, x.sales]),
                 ]}
               ></Chart>
-            )} */}
+            )}
           </div>
           <div className="my-3">
             <h2>Categories</h2>
-            {/* {summary.productCategories.length === 0 ? (
+            {summary && summary.productCategories.length === 0 ? (
               <MessageBox>No Category</MessageBox>
             ) : (
               <Chart
@@ -130,7 +133,7 @@ export default function DashboardScreen() {
                   ...summary.productCategories.map((x) => [x._id, x.count]),
                 ]}
               ></Chart>
-            )} */}
+            )}
           </div>
         </>
       )}
