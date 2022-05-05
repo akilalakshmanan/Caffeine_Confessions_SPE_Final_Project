@@ -25,7 +25,7 @@
       command: docker pull akila1811/node-image:latest
 
     - name: Building docker container from image
-      docker-compose:
+      community.docker.docker_compose:
         project_src: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/
         state: present
 
