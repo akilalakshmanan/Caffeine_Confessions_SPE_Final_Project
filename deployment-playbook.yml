@@ -24,10 +24,29 @@
     - name: Pull image from dockerhub
       command: docker pull akila1811/node-image:latest
 
+    # - docker_service:
+    #     project_src: '/home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/docker-compose.yml'
+    #     build: no
+    #     state: present
+    #     files:
+    #       - 'docker-compose.yml'
+
     - name: Building docker container from image
       community.docker.docker_compose:
-        project_src: /home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/
+        project_src: '~/'
+        #build: no
         state: present
+        files:
+          - 'docker-compose.yml'
+
+    # - name: Building docker container from image
+    #   community.docker.docker_compose:
+    #     state: present
+    #     build: True
+    #     project_src: './home/akila/Desktop/Caffeine_Confessions_SPE_Final_Project/'
+    #     restarted: True
+    #     files:
+    #       - docker-compose.yml
 
     # - name: Building docker container from image
     #   command: docker run -d -it --name react-frontend-container akila1811/react-image:latest
